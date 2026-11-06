@@ -1,0 +1,23 @@
+---
+import { getEntry } from "astro:content";
+
+const entry = await getEntry("settings", "index");
+const { phone, whatsapp } = entry!.data;
+const tel = phone ? `tel:${phone}` : "/kontakt";
+const wa = whatsapp ? `https://wa.me/${whatsapp.replace(/\D/g, "")}` : "/kontakt";
+---
+
+<div
+  class="fixed inset-x-0 bottom-0 z-30 grid grid-cols-2 border-t-2 border-graphit bg-paper md:hidden"
+  style="padding-bottom: env(safe-area-inset-bottom)"
+>
+  <a href={tel} class="flex min-h-14 items-center justify-center font-semibold hover:bg-carbon">
+    Anrufen
+  </a>
+  <a
+    href={wa}
+    class="flex min-h-14 items-center justify-center border-l-2 border-graphit bg-pen font-semibold text-paper hover:bg-pen-dark"
+  >
+    WhatsApp
+  </a>
+</div>

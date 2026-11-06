@@ -1,0 +1,185 @@
+---
+import DynamicImage from "./utils/DynamicImage.astro";
+import Siegel from "./Siegel.astro";
+import { IMAGES } from "../data/images";
+
+interface Props {
+  bestandsNr: string;
+  titel: string;
+  untertitel: string;
+  baujahr: number;
+  km: number;
+  kraftstoff: string;
+  getriebe: string;
+  ps: number;
+  hu: string;
+  preis: number;
+  bild: keyof typeof IMAGES;
+  beispiel?: boolean;
+  messwerte: { label: string; wert: string; ok: boolean }[];
+  geprueftAm: string;
+  maengel: string[];
+  open?: boolean;
+  garantieHref?: string;
+}
+
+const {
+  bestandsNr,
+  titel,
+  untertitel,
+  baujahr,
+  km,
+  kraftstoff,
+  getriebe,
+  ps,
+  hu,
+  preis,
+  bild,
+  beispiel = false,
+  messwerte,
+  geprueftAm,
+  maengel,
+  open = false,
+  garantieHref = "/garantie",
+} = Astro.props;
+
+const de = (n: number) => n.toLocaleString("de-DE");
+const facts = [
+  ["Erstzulassung", String(baujahr)],
+  ["Kilometer", `${de(km)} km`],
+  ["Kraftstoff", kraftstoff],
+  ["HU bis", hu],
+];
+const image = IMAGES[bild];
+---
+
+<article class="akte relative border-2 border-graphit bg-sheet">
+  {
+    beispiel && (
+      <p
+        class="absolute top-4 -right-2 z-10 rotate-6 border-[3px] border-stamp bg-sheet/90 px-3 py-1 font-display text-lg wide tracking-widest text-stamp"
+      >
+        BEISPIEL
+      </p>
+    )
+  }
+
+  <DynamicImage
+    src={image.file}
+    alt={image.alt}
+    isAi={image.isAi}
+    classes="aspect-[4/3] w-full border-b-2 border-graphit object-cover"
+    loading="eager"
+  />
+
+  <div class="p-5 sm:p-6">
+    <div class="flex items-center gap-3">
+      <span
+        class="inline-flex items-stretch border-2 border-graphit bg-sheet font-mono text-sm font-medium"
+        title="Bestandsnummer"
+      >
+        <span class="flex items-center bg-pen px-1.5 text-[10px] leading-none text-paper">D</span>
+        <span class="px-2.5 py-1 tracking-widest">NR. {bestandsNr}</span>
+      </span>
+      <span class="label">Fahrzeugakte</span>
+    </div>
+
+    <h3 class="mt-4 text-3xl sm:text-4xl narrow">{titel}</h3>
+    <p class="text-graphit-soft">{untertitel}</p>
+
+    <p class="mt-4 flex flex-wrap items-baseline gap-x-3">
+      <span class="font-display text-4xl wide">{de(preis)}&nbsp;€</span>
+      <span class="label">Endpreis inkl. MwSt.</span>
+    </p>
+
+    <dl class="mt-5 grid grid-cols-2 gap-x-4 gap-y-3 border-y border-rule py-4 sm:grid-cols-4">
+      {
+        facts.map(([k, v]) => (
+          <div>
+            <dt class="label">{k}</dt>
+            <dd class="font-mono text-[0.95rem] font-medium">{v}</dd>
+          </div>
+        ))
+      }
+    </dl>
+
+    <details class="group mt-4" open={open}>
+      <summary
+        class="flex min-h-12 cursor-pointer list-none items-center justify-between gap-3 font-semibold marker:hidden [&::-webkit-details-marker]:hidden"
+      >
+        <span>Prüfprotokoll {open ? "" : "öffnen"}</span>
+        <span
+          aria-hidden="true"
+          class="font-mono text-xl leading-none transition-transform group-open:rotate-45">+</span
+        >
+      </summary>
+
+      <ul class="mt-2" role="list">
+        {
+          messwerte.map((m, i) => (
+            <li
+              class="prot-row flex items-baseline gap-2 py-1.5"
+              style={`--i:${i}`}
+            >
+              <svg
+                viewBox="0 0 20 20"
+                width="18"
+                height="18"
+                aria-hidden="true"
+                class="relative top-[3px] shrink-0 text-pen"
+              >
+                <path
+                  class="tick"
+                  d="M3 11 L8 16 L17 4"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.6"
+                  stroke-linecap="square"
+                />
+              </svg>
+              <span class="text-[0.95rem]">{m.label}</span>
+              <span class="mb-1 min-w-4 flex-1 border-b border-dotted border-graphit-soft" aria-hidden="true" />
+              <span class="font-mono text-sm font-medium text-pen">{m.wert}</span>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="label mt-3">Geprüft am {geprueftAm}</p>
+
+      {
+        maengel.length > 0 && (
+          <div class="mt-5 border-l-4 border-stamp bg-stamp/5 p-4">
+            <p class="font-display text-lg text-stamp narrow">Mängel und Gebrauchsspuren</p>
+            <ul class="mt-1 list-disc pl-5 text-[0.95rem]">
+              {maengel.map((m) => (
+                <li>{m}</li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+    </details>
+
+    <div class="mt-5 flex items-center gap-3 border-t border-rule pt-5">
+      <Siegel id={`${bestandsNr}-gw`} kopf="Gewährleistung" mitte="12" unten="Monate" size={84} />
+      <Siegel id={`${bestandsNr}-hu`} kopf="Hauptuntersuchung" mitte={hu} unten="gültig bis" tone="graphit" size={84} />
+      <a href={garantieHref} class="ml-auto text-sm font-semibold underline underline-offset-4 hover:text-pen">
+        Was gilt, wenn etwas kaputtgeht?
+      </a>
+    </div>
+  </div>
+</article>
+
+<style>
+  .tick {
+    stroke-dasharray: 26;
+    stroke-dashoffset: 26;
+    animation: draw 0.45s ease-out forwards;
+    animation-delay: calc(var(--i) * 0.28s + 0.5s);
+  }
+  @keyframes draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+</style>

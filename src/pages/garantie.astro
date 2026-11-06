@@ -1,0 +1,82 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHeader from "../components/PageHeader.astro";
+import Siegel from "../components/Siegel.astro";
+import Offen from "../components/Offen.astro";
+
+const schritte = [
+  ["Melden", "Rufen Sie an oder schreiben Sie per WhatsApp. Ein Foto oder Video des Problems hilft."],
+  ["Vorbeibringen", "Unsere Werkstatt sieht sich das Fahrzeug an und sagt Ihnen, was die Ursache ist."],
+  ["Klären", "Wir sagen Ihnen vorher, ob es ein Fall für Gewährleistung oder Garantie ist, und was das für Sie kostet."],
+  ["Beheben", "Die Reparatur erfolgt in unserer Werkstatt. Dauer und Ersatzmobilität besprechen wir vorab."],
+];
+---
+
+<Layout title="Garantie und Gewährleistung – C&C Autozentrum" description="Was gilt, wenn nach dem Kauf etwas kaputtgeht: gesetzliche Gewährleistung, unsere Zusagen und optionale Garantie.">
+  <PageHeader
+    eyebrow="Garantie und Gewährleistung"
+    title="Was gilt, wenn nach dem Kauf etwas kaputtgeht."
+    lead="Zwei Dinge werden oft verwechselt: die Gewährleistung, die das Gesetz vorschreibt, und die Garantie, die freiwillig dazukommt. Hier steht beides getrennt."
+  />
+
+  <section class="wrap grid gap-8 py-16 lg:grid-cols-3">
+    <article class="border-2 border-graphit bg-sheet p-6">
+      <Siegel id="gar-ges" kopf="Gesetzlich" mitte="immer" unten="gültig" tone="graphit" size={96} />
+      <h2 class="mt-4 text-3xl narrow">Gewährleistung</h2>
+      <p class="mt-2 text-graphit-soft">Gilt bei jedem Kauf von uns als Händler an Privatpersonen.</p>
+      <ul class="mt-4 list-disc space-y-2 pl-5 text-[0.95rem]">
+        <li>Grundsätzlich 2 Jahre. Bei Gebrauchtwagen darf sie auf 1 Jahr verkürzt werden, aber nur, wenn das ausdrücklich im Vertrag steht.</li>
+        <li>In den ersten 12 Monaten wird vermutet, dass ein Mangel schon bei Übergabe da war. Wir müssten das Gegenteil beweisen.</li>
+        <li>Verschleißteile wie Bremsbeläge oder Reifen sind keine Mängel, wenn sie normal abgenutzt sind.</li>
+      </ul>
+    </article>
+
+    <article class="border-2 border-graphit bg-sheet p-6">
+      <Siegel id="gar-cc" kopf="Von C&C" mitte="12" unten="Monate" size={96} />
+      <h2 class="mt-4 text-3xl narrow">Unsere Zusage</h2>
+      <p class="mt-2 text-graphit-soft">Was wir bei jedem Fahrzeug schriftlich festhalten.</p>
+      <ul class="mt-4 list-disc space-y-2 pl-5 text-[0.95rem]">
+        <li>Dauer der Gewährleistung: <Offen>[Dauer vom Team festlegen]</Offen></li>
+        <li>Das Prüfprotokoll gehört zum Kaufvertrag.</li>
+        <li>Bekannte Mängel stehen in der Fahrzeugakte, mit Foto.</li>
+        <li>Ansprechpartner bei Problemen: dieselbe Nummer wie vor dem Kauf.</li>
+      </ul>
+    </article>
+
+    <article class="border-2 border-graphit bg-sheet p-6">
+      <Siegel id="gar-opt" kopf="Garantie" mitte="optional" unten="zubuchbar" tone="stamp" size={96} />
+      <h2 class="mt-4 text-3xl narrow">Garantie dazubuchen</h2>
+      <p class="mt-2 text-graphit-soft">Zusätzlicher Schutz über einen Garantiegeber, auch für Defekte, die das Gesetz nicht abdeckt.</p>
+      <dl class="mt-4 space-y-2 text-[0.95rem]">
+        <div class="flex justify-between gap-3 border-b border-rule pb-2"><dt>Anbieter</dt><dd><Offen>[Name]</Offen></dd></div>
+        <div class="flex justify-between gap-3 border-b border-rule pb-2"><dt>Laufzeit</dt><dd><Offen>[Monate]</Offen></dd></div>
+        <div class="flex justify-between gap-3 border-b border-rule pb-2"><dt>Selbstbeteiligung</dt><dd><Offen>[Betrag]</Offen></dd></div>
+        <div class="flex justify-between gap-3"><dt>Preis</dt><dd><Offen>[ab … €]</Offen></dd></div>
+      </dl>
+      <p class="mt-4 text-sm text-graphit-soft">Welche Teile nicht gedeckt sind, steht in den Garantiebedingungen. Wir legen Ihnen diese vor dem Kauf vor.</p>
+    </article>
+  </section>
+
+  <section class="bg-carbon py-16">
+    <div class="wrap grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
+      <div>
+        <p class="label">Im Fall der Fälle</p>
+        <h2 class="mt-3 text-4xl sm:text-5xl narrow">So läuft es ab, wenn etwas nicht stimmt.</h2>
+      </div>
+      <ol class="border-t-2 border-graphit" role="list">
+        {schritte.map(([t, x], i) => (
+          <li class="grid grid-cols-[3rem_1fr] gap-4 border-b border-graphit/20 py-5">
+            <span class="font-mono text-sm text-pen" aria-hidden="true">{i + 1}.</span>
+            <div><h3 class="text-2xl narrow">{t}</h3><p class="mt-1 text-graphit-soft">{x}</p></div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="wrap py-12">
+    <p class="border-l-4 border-gauge bg-gauge/20 p-4 text-sm">
+      Hinweis für das Team: Die gelb markierten Felder müssen vor dem Livegang ausgefüllt werden. Die gesetzlichen Angaben sind sinngemäß wiedergegeben und sollten vor Veröffentlichung kurz von einer Rechtsberatung geprüft werden.
+    </p>
+  </section>
+</Layout>

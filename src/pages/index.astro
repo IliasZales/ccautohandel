@@ -1,0 +1,151 @@
+---
+import { getCollection, getEntry } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import Fahrzeugakte from "../components/Fahrzeugakte.astro";
+import Siegel from "../components/Siegel.astro";
+import DynamicImage from "../components/utils/DynamicImage.astro";
+import { IMAGES } from "../data/images";
+
+const settings = await getEntry("settings", "index");
+const { adress, hours, phone, phoneDisplay } = settings!.data;
+const tel = phone ? `tel:${phone}` : "/kontakt";
+
+const bestand = (await getCollection("fahrzeuge")).sort((a, b) => a.data.preis - b.data.preis);
+const hero = bestand[0];
+
+const DATA = {
+  pruefschritte: [
+    ["Ankauf mit Blick auf die Historie", "Wir kaufen nur Fahrzeuge, deren Kilometerstand und Vorbesitzer wir nachvollziehen können."],
+    ["Prüfung in der eigenen Werkstatt", "Bremsen, Reifen, Öl, Flüssigkeiten, Fahrwerk und Fehlerspeicher werden gemessen, nicht geschätzt."],
+    ["Mängel werden fotografiert", "Kratzer, Steinschläge und Nachlackierungen stehen in der Akte, mit Foto."],
+    ["Aufbereitung und Übergabe", "Sie bekommen das Prüfprotokoll mit, die Schlüssel und alle Unterlagen, die wir haben."],
+  ],
+  wege: [
+    ["Auto kaufen", "Alle Fahrzeuge mit Prüfprotokoll und Endpreis.", "/fahrzeuge", "Fahrzeuge ansehen"],
+    ["Auto verkaufen", "Wir bewerten Ihr Fahrzeug fair und sagen Ihnen, wie wir auf den Preis kommen.", "/ankauf", "Ankauf starten"],
+    ["Werkstatt und Reifen", "Inspektion, Reparatur, Reifenwechsel, auch für Autos, die nicht von uns sind.", "/werkstatt", "Termin anfragen"],
+  ],
+};
+---
+
+<Layout>
+  <!-- Hero: eine Aussage, ein Beweis -->
+  <section class="border-b-2 border-graphit">
+    <div class="wrap grid gap-10 py-10 lg:grid-cols-[1.05fr_0.95fr] lg:py-16">
+      <div class="flex flex-col self-start lg:sticky lg:top-24">
+        <p class="label">Gebrauchtwagen · Ankauf · Werkstatt</p>
+        <h1 class="mt-4 text-[clamp(2.75rem,8vw,5.5rem)] narrow">
+          Jedes Auto kommt mit seiner Akte.
+        </h1>
+        <p class="mt-6 max-w-xl text-lg text-graphit-soft">
+          Was wir geprüft haben, was uns aufgefallen ist und was es am Ende kostet,
+          steht auf dem Tisch, bevor Sie zu uns fahren. Nicht erst im Kaufvertrag.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="/fahrzeuge" class="btn btn-primary">Fahrzeuge ansehen</a>
+          <a href={tel} class="btn btn-ghost">
+            <span class="font-mono text-sm">{phoneDisplay}</span>
+          </a>
+        </div>
+        <p class="mt-6 text-sm text-graphit-soft">{adress.street}, {adress.zip} {adress.city} · {hours}</p>
+      </div>
+
+      {hero && <Fahrzeugakte {...hero.data} open />}
+    </div>
+  </section>
+
+  <!-- Was vor dem Verkauf passiert: echte Reihenfolge, daher nummeriert -->
+  <section class="wrap py-20" id="pruefung">
+    <div class="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
+      <div>
+        <p class="label">Vor dem Verkauf</p>
+        <h2 class="mt-3 text-4xl sm:text-5xl narrow">Was mit einem Auto passiert, bevor es bei uns steht.</h2>
+      </div>
+      <ol class="border-t-2 border-graphit" role="list">
+        {
+          DATA.pruefschritte.map(([titel, text], i) => (
+            <li class="grid grid-cols-[3rem_1fr] gap-4 border-b border-rule py-5">
+              <span class="font-mono text-sm text-pen" aria-hidden="true">{i + 1}.</span>
+              <div>
+                <h3 class="text-2xl narrow">{titel}</h3>
+                <p class="mt-1 text-graphit-soft">{text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- Hof und Menschen -->
+  <section class="bg-carbon py-20" id="hof">
+    <div class="wrap grid items-center gap-10 lg:grid-cols-2">
+      <DynamicImage
+        src={IMAGES.hof.file}
+        alt={IMAGES.hof.alt}
+        isAi={IMAGES.hof.isAi}
+        classes="aspect-[16/11] w-full border-2 border-graphit object-cover"
+      />
+      <div>
+        <p class="label">Wo Sie uns finden</p>
+        <h2 class="mt-3 text-4xl sm:text-5xl narrow">Ein Hof mit Adresse, Werkstatt und Menschen, die Sie anrufen können.</h2>
+        <p class="mt-5 text-lg">
+          C&amp;C Autozentrum ist eine GbR. Das bedeutet: Die Gesellschafter haften persönlich und
+          stehen mit Namen hinter jedem Verkauf. Sie finden sie auf der Teamseite.
+        </p>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a href="/team" class="btn btn-primary">Das Team kennenlernen</a>
+          <a href="/kontakt" class="btn btn-ghost">Anfahrt und Öffnungszeiten</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Garantie in Klartext -->
+  <section class="wrap py-20" id="garantie">
+    <div class="grid gap-10 lg:grid-cols-[1.2fr_0.8fr]">
+      <div>
+        <p class="label">Wenn etwas kaputtgeht</p>
+        <h2 class="mt-3 text-4xl sm:text-5xl narrow">Garantie, so erklärt, dass Sie es ohne Anwalt verstehen.</h2>
+        <dl class="mt-8 border-t-2 border-graphit">
+          {
+            [
+              ["Gewährleistung", "Das Gesetz gibt Ihnen sie beim Kauf vom Händler. Wir sagen Ihnen vorher, wie lange sie bei jedem Fahrzeug gilt."],
+              ["Garantie (optional)", "Zusätzlicher Schutz über einen Garantiegeber. Wir nennen Anbieter, Laufzeit, Selbstbeteiligung und was nicht gedeckt ist."],
+              ["Ihr Ansprechpartner", "Bei einem Problem rufen Sie dieselbe Nummer an wie vor dem Kauf. Die Werkstatt steht auf dem Hof."],
+            ].map(([k, v]) => (
+              <div class="grid gap-1 border-b border-rule py-4 sm:grid-cols-[11rem_1fr] sm:gap-6">
+                <dt class="font-display text-xl narrow">{k}</dt>
+                <dd class="text-graphit-soft">{v}</dd>
+              </div>
+            ))
+          }
+        </dl>
+        <a href="/garantie" class="btn btn-primary mt-8">Garantie im Detail</a>
+      </div>
+      <div class="flex flex-wrap content-start justify-center gap-5 border-2 border-graphit bg-sheet p-6">
+        <Siegel id="g-gw" kopf="Gewährleistung" mitte="12" unten="Monate" size={128} />
+        <Siegel id="g-ga" kopf="Garantie" mitte="optional" unten="schriftlich" tone="graphit" size={128} />
+        <p class="label w-full text-center">
+          Platzhalter: Dauer und Bedingungen werden mit dem Team festgelegt.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Drei Wege -->
+  <section class="wrap pb-4" aria-labelledby="wege">
+    <h2 id="wege" class="sr-only">Was Sie bei uns tun können</h2>
+    <div class="grid gap-0 border-2 border-graphit md:grid-cols-3">
+      {
+        DATA.wege.map(([titel, text, href, cta]) => (
+          <a href={href} class="group block border-b-2 border-graphit p-6 last:border-b-0 hover:bg-gauge md:border-r-2 md:border-b-0 md:last:border-r-0">
+            <h3 class="text-3xl narrow">{titel}</h3>
+            <p class="mt-2 text-graphit-soft group-hover:text-graphit">{text}</p>
+            <p class="mt-6 font-semibold underline underline-offset-4">{cta}</p>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+</Layout>

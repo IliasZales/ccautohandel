@@ -1,0 +1,76 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHeader from "../components/PageHeader.astro";
+import Formular from "../components/Formular.astro";
+import DynamicImage from "../components/utils/DynamicImage.astro";
+import Offen from "../components/Offen.astro";
+import { IMAGES } from "../data/images";
+
+const leistungen = [
+  ["Inspektion und Wartung", "Öl, Filter, Bremsflüssigkeit, nach Herstellervorgaben."],
+  ["Bremsen und Fahrwerk", "Beläge, Scheiben, Stoßdämpfer, Spur."],
+  ["Reifenservice", "Wechsel, Wuchten, Einlagerung, Neureifen."],
+  ["Hauptuntersuchung", "Vorbereitung und Vorstellung zur HU."],
+  ["Fehlerdiagnose", "Auslesen und Prüfen, mit schriftlichem Ergebnis."],
+];
+---
+
+<Layout title="Werkstatt und Reifenservice – C&C Autozentrum" description="Eigene Werkstatt und Reifenservice, auch für Fahrzeuge, die nicht von uns sind.">
+  <PageHeader
+    eyebrow="Werkstatt"
+    title="Die Werkstatt, die auch unsere eigenen Autos prüft."
+    lead="Wer bei uns kauft, kennt die Werkstatt schon. Sie steht auf dem Hof und steht auch Ihrem Auto offen, egal, wo Sie es gekauft haben."
+  />
+
+  <section class="wrap grid gap-10 py-16 lg:grid-cols-2">
+    <DynamicImage src={IMAGES.werkstatt.file} alt={IMAGES.werkstatt.alt} isAi={IMAGES.werkstatt.isAi} classes="aspect-[16/11] w-full border-2 border-graphit object-cover" />
+    <div>
+      <h2 class="text-4xl narrow">Das machen wir</h2>
+      <ul class="mt-5 border-t-2 border-graphit" role="list">
+        {leistungen.map(([t, x]) => (
+          <li class="border-b border-rule py-4"><h3 class="text-xl narrow">{t}</h3><p class="text-graphit-soft">{x}</p></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="bg-carbon py-16">
+    <div class="wrap grid gap-10 lg:grid-cols-2">
+      <div>
+        <h2 class="text-4xl narrow">Preise</h2>
+        <p class="mt-2 text-graphit-soft">Festpreise für das, was sich festlegen lässt. Alles andere mit Kostenvoranschlag vorab.</p>
+        <table class="mt-5 w-full text-left">
+          <caption class="sr-only">Preisliste Werkstatt</caption>
+          <tbody>
+            {[
+              ["Reifenwechsel, 4 Räder, inkl. Wuchten", "[… €]"],
+              ["Ölwechsel mit Filter", "[ab … €]"],
+              ["Fehlerspeicher auslesen", "[… €]"],
+              ["Stundenverrechnungssatz", "[… €]"],
+            ].map(([k, p]) => (
+              <tr class="border-b border-graphit/20"><th scope="row" class="py-3 font-normal">{k}</th><td class="py-3 text-right font-mono text-sm"><Offen>{p}</Offen></td></tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div class="self-start border-2 border-graphit bg-sheet p-6" id="termin">
+        <h2 class="text-3xl narrow">Termin anfragen</h2>
+        <div class="mt-4">
+          <Formular
+            id="werkstatt"
+            betreff="Werkstatt-Terminanfrage"
+            button="Termin anfragen"
+            zusage="Wir bestätigen Ihren Wunschtermin telefonisch."
+            felder={[
+              { name: "fahrzeug", label: "Fahrzeug und Kennzeichen", required: true },
+              { name: "anliegen", label: "Was soll gemacht werden?", type: "select", required: true, options: ["Inspektion", "Reifenservice", "Bremsen", "Hauptuntersuchung", "Fehlerdiagnose", "Anderes"] },
+              { name: "name", label: "Name", required: true, autocomplete: "name", half: true },
+              { name: "telefon", label: "Telefon", type: "tel", required: true, autocomplete: "tel", half: true },
+              { name: "nachricht", label: "Hinweise", type: "textarea" },
+            ]}
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

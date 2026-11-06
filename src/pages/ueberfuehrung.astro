@@ -1,0 +1,87 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHeader from "../components/PageHeader.astro";
+import Offen from "../components/Offen.astro";
+
+const schritte = [
+  ["Fahrzeug aussuchen", "Sie wählen ein Auto und nennen uns Ihre Postleitzahl."],
+  ["Preis nennen", "Wir nennen Ihnen die Überführungskosten, bevor Sie etwas unterschreiben."],
+  ["Papiere klären", "Kaufvertrag, Zahlung, Versicherungsbestätigung (eVB) für Ihr Kennzeichen."],
+  ["Zulassung", "Wir melden das Fahrzeug an oder Sie bekommen es mit Kurzzeitkennzeichen."],
+  ["Lieferung", "Wir fahren oder liefern das Auto zum vereinbarten Termin zu Ihnen."],
+];
+const staffel = [
+  ["bis 50 km", "[… €]"],
+  ["51 bis 150 km", "[… €]"],
+  ["151 bis 300 km", "[… €]"],
+  ["über 300 km", "[auf Anfrage]"],
+];
+---
+
+<Layout title="Überführung und Lieferung – C&C Autozentrum" description="Wir liefern Ihr Fahrzeug: Kosten nach Entfernung, Ablauf, Versicherung und Kennzeichen.">
+  <PageHeader
+    eyebrow="Überführung"
+    title="Wir bringen das Auto zu Ihnen."
+    lead="Sie wohnen weiter weg? Kein Problem. Hier steht, was die Lieferung kostet, wie sie abläuft und was Sie am Übergabetag prüfen sollten."
+  />
+
+  <section class="wrap grid gap-12 py-16 lg:grid-cols-[1.1fr_0.9fr]">
+    <div>
+      <h2 class="text-4xl narrow">So läuft die Überführung ab</h2>
+      <ol class="mt-5 border-t-2 border-graphit" role="list">
+        {schritte.map(([t, x], i) => (
+          <li class="grid grid-cols-[3rem_1fr] gap-4 border-b border-rule py-5">
+            <span class="font-mono text-sm text-pen" aria-hidden="true">{i + 1}.</span>
+            <div><h3 class="text-2xl narrow">{t}</h3><p class="mt-1 text-graphit-soft">{x}</p></div>
+          </li>
+        ))}
+      </ol>
+    </div>
+
+    <aside class="self-start border-2 border-graphit bg-sheet p-6">
+      <h2 class="text-3xl narrow">Kosten nach Entfernung</h2>
+      <table class="mt-4 w-full text-left">
+        <caption class="sr-only">Überführungskosten nach Entfernung</caption>
+        <thead><tr class="label border-b-2 border-graphit"><th class="py-2 font-normal">Entfernung</th><th class="py-2 text-right font-normal">Preis inkl. MwSt.</th></tr></thead>
+        <tbody>
+          {staffel.map(([k, p]) => (
+            <tr class="border-b border-rule"><th scope="row" class="py-2.5 font-normal">{k}</th><td class="py-2.5 text-right font-mono text-sm"><Offen>{p}</Offen></td></tr>
+          ))}
+        </tbody>
+      </table>
+      <p class="mt-4 text-sm text-graphit-soft">Abholung auf unserem Hof ist immer kostenlos.</p>
+    </aside>
+  </section>
+
+  <section class="bg-carbon py-16">
+    <div class="wrap grid gap-8 md:grid-cols-3">
+      <div>
+        <h2 class="text-3xl narrow">Versicherung</h2>
+        <p class="mt-2">Während der Überführung ist das Fahrzeug versichert: <Offen>[Art und Deckungssumme bestätigen]</Offen></p>
+      </div>
+      <div>
+        <h2 class="text-3xl narrow">Kennzeichen</h2>
+        <p class="mt-2">Mit Ihrer eVB-Nummer melden wir das Auto auf Ihren Wunsch an. Alternativ erhalten Sie ein Kurzzeitkennzeichen.</p>
+      </div>
+      <div>
+        <h2 class="text-3xl narrow">Zahlung</h2>
+        <p class="mt-2">Bezahlt wird erst bei Übergabe oder nach schriftlicher Vereinbarung: <Offen>[Zahlungswege bestätigen]</Offen></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap py-16">
+    <h2 class="text-4xl narrow">Das prüfen Sie bei der Übergabe</h2>
+    <ul class="mt-6 grid gap-3 sm:grid-cols-2" role="list">
+      {[
+        "Fahrgestellnummer im Fahrzeugschein und am Auto stimmen überein.",
+        "Alle Schlüssel und Unterlagen aus dem Prüfprotokoll sind dabei.",
+        "Der Kilometerstand passt zur Akte.",
+        "Mängel aus der Akte sind unverändert, neue Schäden vermerken wir gemeinsam.",
+      ].map((t) => (
+        <li class="flex gap-3 border-2 border-graphit bg-sheet p-4"><span aria-hidden="true" class="font-bold text-pen">✓</span><span>{t}</span></li>
+      ))}
+    </ul>
+    <a href="/kontakt" class="btn btn-primary mt-8">Überführung anfragen</a>
+  </section>
+</Layout>

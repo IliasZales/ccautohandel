@@ -1,0 +1,64 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHeader from "../components/PageHeader.astro";
+import Formular from "../components/Formular.astro";
+
+const schritte = [
+  ["Angaben schicken", "Marke, Modell, Baujahr, Kilometer und ein paar Fotos. Das Formular dauert drei Minuten."],
+  ["Erste Einschätzung", "Wir melden uns am selben Werktag mit einer Preisspanne und sagen, wie sie zustande kommt."],
+  ["Besichtigung", "Sie bringen das Auto vorbei. Wir prüfen es gemeinsam mit Ihnen, nicht hinter verschlossener Tür."],
+  ["Festpreis", "Sie bekommen den Preis schriftlich. Weicht er von der Einschätzung ab, begründen wir das am Fahrzeug."],
+  ["Auszahlung", "Vertrag, Abmeldung, Geld. Wie schnell und auf welchem Weg, steht im Vertrag."],
+];
+---
+
+<Layout title="Auto verkaufen – C&C Autozentrum" description="Ihr Gebrauchtwagen, fair bewertet: Ablauf, Preisfindung und Auszahlung.">
+  <PageHeader
+    eyebrow="Ankauf"
+    title="Auto verkaufen, ohne dass Sie hinterher rechnen müssen."
+    lead="Wir sagen Ihnen, was wir zahlen und warum. Keine Lockpreise am Telefon, die vor Ort schrumpfen."
+  />
+
+  <section class="wrap grid gap-12 py-16 lg:grid-cols-[1fr_1fr]">
+    <div>
+      <h2 class="text-4xl narrow">So läuft der Ankauf</h2>
+      <ol class="mt-5 border-t-2 border-graphit" role="list">
+        {schritte.map(([t, x], i) => (
+          <li class="grid grid-cols-[3rem_1fr] gap-4 border-b border-rule py-5">
+            <span class="font-mono text-sm text-pen" aria-hidden="true">{i + 1}.</span>
+            <div><h3 class="text-2xl narrow">{t}</h3><p class="mt-1 text-graphit-soft">{x}</p></div>
+          </li>
+        ))}
+      </ol>
+      <div class="mt-8 border-l-4 border-stamp bg-stamp/5 p-4">
+        <p class="font-display text-xl text-stamp narrow">Was wir nicht tun</p>
+        <ul class="mt-1 list-disc pl-5 text-[0.95rem]">
+          <li>Keine Preisnennung ohne Grundlage.</li>
+          <li>Kein Druck, sofort zu unterschreiben.</li>
+          <li>Keine versteckten Gebühren bei der Abwicklung.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="self-start border-2 border-graphit bg-sheet p-6" id="formular">
+      <h2 class="text-3xl narrow">Fahrzeug anbieten</h2>
+      <div class="mt-4">
+        <Formular
+          id="ankauf"
+          betreff="Ankaufanfrage"
+          button="Einschätzung anfordern"
+          zusage="Unverbindlich und kostenlos. Antwort am selben Werktag."
+          felder={[
+            { name: "fahrzeug", label: "Marke und Modell", required: true },
+            { name: "baujahr", label: "Baujahr", type: "number", required: true, half: true },
+            { name: "km", label: "Kilometerstand", type: "number", required: true, half: true },
+            { name: "zustand", label: "Zustand und Besonderheiten", type: "textarea", hint: "Schäden, Mängel, Ausstattung, Scheckheft." },
+            { name: "name", label: "Name", required: true, autocomplete: "name", half: true },
+            { name: "telefon", label: "Telefon", type: "tel", required: true, autocomplete: "tel", half: true },
+          ]}
+        />
+      </div>
+      <p class="mt-4 text-sm text-graphit-soft">Fotos schicken Sie nach der Anfrage per WhatsApp an uns.</p>
+    </div>
+  </section>
+</Layout>

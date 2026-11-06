@@ -1,0 +1,99 @@
+---
+import { getCollection, getEntry } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import PageHeader from "../../components/PageHeader.astro";
+import FahrzeugKarte from "../../components/FahrzeugKarte.astro";
+
+const settings = await getEntry("settings", "index");
+const { phone, phoneDisplay } = settings!.data;
+const tel = phone ? `tel:${phone}` : "/kontakt";
+
+const bestand = (await getCollection("fahrzeuge")).sort((a, b) => a.data.preis - b.data.preis);
+const kraftstoffe = [...new Set(bestand.map((f) => f.data.kraftstoff))].sort();
+const input = "mt-1 block min-h-12 w-full border-2 border-graphit bg-sheet px-3 py-2 text-base focus:border-pen";
+---
+
+<Layout title="Fahrzeuge – C&C Autozentrum" description="Aktueller Bestand mit Prüfprotokoll, Mängelliste und Endpreis.">
+  <PageHeader
+    eyebrow="Bestand"
+    title="Alle Fahrzeuge mit Akte und Endpreis."
+    lead="Jede Karte führt zur Fahrzeugakte: Messwerte, Mängel, Fotos und was das Auto am Ende kostet."
+  />
+
+  <section class="wrap py-10">
+    <form id="filter" class="grid gap-4 border-2 border-graphit bg-sheet p-4 sm:grid-cols-3" role="search" aria-label="Fahrzeuge filtern">
+      <div>
+        <label for="f-kraftstoff" class="font-semibold">Kraftstoff</label>
+        <select id="f-kraftstoff" name="kraftstoff" class={input}>
+          <option value="">Alle</option>
+          {kraftstoffe.map((k) => <option value={k}>{k}</option>)}
+        </select>
+      </div>
+      <div>
+        <label for="f-preis" class="font-semibold">Höchstpreis</label>
+        <select id="f-preis" name="preis" class={input}>
+          <option value="">Egal</option>
+          {[10000, 15000, 20000, 30000].map((p) => <option value={p}>bis {p.toLocaleString("de-DE")} €</option>)}
+        </select>
+      </div>
+      <div>
+        <label for="f-km" class="font-semibold">Höchstkilometer</label>
+        <select id="f-km" name="km" class={input}>
+          <option value="">Egal</option>
+          {[50000, 100000, 150000].map((k) => <option value={k}>bis {k.toLocaleString("de-DE")} km</option>)}
+        </select>
+      </div>
+    </form>
+
+    <p id="zaehler" class="label mt-6" role="status" aria-live="polite"></p>
+
+    <ul id="liste" class="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-3" role="list">
+      {bestand.map((f) => <FahrzeugKarte id={f.id} {...f.data} />)}
+    </ul>
+
+    <div id="leer" hidden class="mt-4 border-2 border-graphit bg-carbon p-8" role="status">
+      <h2 class="text-3xl narrow">Dazu haben wir gerade nichts auf dem Hof.</h2>
+      <p class="mt-2 max-w-xl">Sagen Sie uns, was Sie suchen. Wir melden uns, sobald ein passendes Fahrzeug hereinkommt, oder rufen Sie direkt an.</p>
+      <div class="mt-5 flex flex-wrap gap-3">
+        <a href="/kontakt#suchauftrag" class="btn btn-primary">Suchauftrag aufgeben</a>
+        <a href={tel} class="btn btn-ghost"><span class="font-mono text-sm">{phoneDisplay}</span></a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  const form = document.getElementById("filter") as HTMLFormElement;
+  const cards = [...document.querySelectorAll<HTMLElement>("#liste .fz")];
+  const zaehler = document.getElementById("zaehler")!;
+  const leer = document.getElementById("leer")!;
+
+  function apply() {
+    const data = new FormData(form);
+    const fuel = String(data.get("kraftstoff") ?? "");
+    const preis = Number(data.get("preis")) || Infinity;
+    const km = Number(data.get("km")) || Infinity;
+    let n = 0;
+    for (const c of cards) {
+      const ok =
+        (!fuel || c.dataset.kraftstoff === fuel) &&
+        Number(c.dataset.preis) <= preis &&
+        Number(c.dataset.km) <= km;
+      c.hidden = !ok;
+      if (ok) n++;
+    }
+    leer.hidden = n > 0;
+    zaehler.textContent = `${n} von ${cards.length} Fahrzeugen`;
+    const p = new URLSearchParams();
+    for (const [k, v] of data) if (v) p.set(k, String(v));
+    history.replaceState(null, "", p.size ? `?${p}` : location.pathname);
+  }
+
+  const params = new URLSearchParams(location.search);
+  for (const [k, v] of params) {
+    const el = form.elements.namedItem(k);
+    if (el instanceof HTMLSelectElement) el.value = v;
+  }
+  form.addEventListener("change", apply);
+  apply();
+</script>

@@ -1,0 +1,45 @@
+{
+  "bestandsNr": "0003",
+  "titel": "Skoda Octavia Combi",
+  "untertitel": "2.0 TDI Style",
+  "baujahr": 2019,
+  "km": 92300,
+  "kraftstoff": "Diesel",
+  "getriebe": "Automatik",
+  "ps": 150,
+  "hu": "06/2027",
+  "preis": 16490,
+  "bild": "fahrzeugBeispiel",
+  "beispiel": true,
+  "messwerte": [
+    {
+      "label": "Profiltiefe vorne",
+      "wert": "5,5 mm"
+    },
+    {
+      "label": "Profiltiefe hinten",
+      "wert": "5,0 mm"
+    },
+    {
+      "label": "Bremsbelag vorne",
+      "wert": "7 mm"
+    },
+    {
+      "label": "Bremsbelag hinten",
+      "wert": "6 mm"
+    },
+    {
+      "label": "Ölstand und Ölwechsel",
+      "wert": "gewechselt bei 128.100 km"
+    },
+    {
+      "label": "Schlüssel",
+      "wert": "2 von 2 vorhanden"
+    }
+  ],
+  "geprueftAm": "Beispiel",
+  "maengel": [
+    "Steinschlag Frontscheibe, rechts unten, ca. 3 mm",
+    "Kratzer Stoßfänger hinten links, 8 cm, nicht durchlackiert"
+  ]
+}

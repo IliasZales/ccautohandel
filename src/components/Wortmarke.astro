@@ -1,0 +1,19 @@
+---
+interface Props {
+  classes?: string;
+}
+const { classes } = Astro.props;
+---
+
+<span class:list={["inline-flex items-center gap-2.5", classes]}>
+  <span
+    class="inline-flex items-stretch border-2 border-graphit bg-sheet font-display leading-none"
+    aria-hidden="true"
+  >
+    <span class="flex items-center bg-pen px-1 text-[9px] font-bold text-paper">D</span>
+    <span class="px-2 py-1 text-xl narrow tracking-wide">C&amp;C</span>
+  </span>
+  <span class="font-display text-lg leading-none narrow tracking-wide uppercase">
+    Autozentrum
+  </span>
+</span>

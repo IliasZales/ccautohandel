@@ -1,0 +1,71 @@
+---
+interface Props {
+  id: string;
+  kopf: string;
+  mitte: string;
+  unten?: string;
+  tone?: "pen" | "graphit" | "stamp";
+  size?: number;
+  classes?: string;
+}
+
+const { id, kopf, mitte, unten, tone = "pen", size = 96, classes } = Astro.props;
+const mitteSize = mitte.length > 6 ? 19 : mitte.length > 3 ? 24 : 32;
+const color = {
+  pen: "var(--color-pen)",
+  graphit: "var(--color-graphit)",
+  stamp: "var(--color-stamp)",
+}[tone];
+---
+
+<svg
+  viewBox="0 0 120 120"
+  width={size}
+  height={size}
+  role="img"
+  aria-label={`${kopf}: ${mitte}${unten ? ` ${unten}` : ""}`}
+  class:list={["shrink-0", classes]}
+  style={`color:${color}`}
+>
+  <circle cx="60" cy="60" r="57" fill="var(--color-sheet)" stroke="currentColor" stroke-width="3" />
+  <circle cx="60" cy="60" r="38" fill="none" stroke="currentColor" stroke-width="1" />
+  <defs>
+    <path id={`${id}-bogen`} d="M 14,60 A 46,46 0 0 1 106,60" />
+  </defs>
+  <text
+    font-family="var(--font-display)"
+    font-size="8.5"
+    font-weight="700"
+    letter-spacing="1.1"
+    fill="currentColor"
+    text-anchor="middle"
+  >
+    <textPath href={`#${id}-bogen`} startOffset="50%">{kopf.toUpperCase()}</textPath>
+  </text>
+  <text
+    x="60"
+    y={unten ? 62 : 68}
+    font-family="var(--font-display)"
+    font-size={mitteSize}
+    font-weight="800"
+    style="font-stretch:70%"
+    fill="currentColor"
+    text-anchor="middle">{mitte}</text
+  >
+  {
+    unten && (
+      <text
+        x="60"
+        y="78"
+        font-family="var(--font-display)"
+        font-size="8"
+        font-weight="700"
+        letter-spacing="1"
+        fill="currentColor"
+        text-anchor="middle"
+      >
+        {unten.toUpperCase()}
+      </text>
+    )
+  }
+</svg>

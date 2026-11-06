@@ -1,0 +1,25 @@
+{
+  "name": "ccautohandel",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "deploy": "wrangler deploy",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^7.0.7",
+    "@astrojs/sitemap": "^3.7.3",
+    "@tailwindcss/vite": "^4.2.2",
+    "astro": "^7.2.4",
+    "tailwindcss": "^4.2.2"
+  },
+  "devDependencies": {
+    "@fontsource-variable/archivo": "*",
+    "@fontsource-variable/instrument-sans": "*",
+    "@fontsource/dm-mono": "*",
+    "wrangler": "^4.140.0"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "bestandsNr": "0001",
+  "titel": "VW Golf VII Variant",
+  "untertitel": "1.6 TDI Comfortline",
+  "baujahr": 2017,
+  "km": 128400,
+  "kraftstoff": "Diesel",
+  "getriebe": "Schaltgetriebe",
+  "ps": 115,
+  "hu": "10/2027",
+  "preis": 11490,
+  "bild": "fahrzeugBeispiel",
+  "beispiel": true,
+  "messwerte": [
+    { "label": "Profiltiefe vorne", "wert": "5,5 mm" },
+    { "label": "Profiltiefe hinten", "wert": "5,0 mm" },
+    { "label": "Bremsbelag vorne", "wert": "7 mm" },
+    { "label": "Bremsbelag hinten", "wert": "6 mm" },
+    { "label": "Ölstand und Ölwechsel", "wert": "gewechselt bei 128.100 km" },
+    { "label": "Schlüssel", "wert": "2 von 2 vorhanden" }
+  ],
+  "geprueftAm": "Beispiel",
+  "maengel": [
+    "Steinschlag Frontscheibe, rechts unten, ca. 3 mm",
+    "Kratzer Stoßfänger hinten links, 8 cm, nicht durchlackiert"
+  ]
+}

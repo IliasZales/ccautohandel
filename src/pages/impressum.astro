@@ -1,0 +1,31 @@
+---
+import { getEntry } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import PageHeader from "../components/PageHeader.astro";
+import Offen from "../components/Offen.astro";
+const s = await getEntry("settings", "index");
+const { adress, phoneDisplay, email, taxnumber } = s!.data;
+---
+
+<Layout title="Impressum – C&C Autozentrum" description="Anbieterkennzeichnung C&C Autozentrum GbR">
+  <PageHeader eyebrow="Rechtliches" title="Impressum" />
+  <section class="wrap rechtstext pb-8 pt-4">
+    <p class="border-l-4 border-gauge bg-gauge/20 p-4 text-sm">Entwurf: Gelb markierte Angaben ergänzt der Betreiber. Vor Veröffentlichung rechtlich prüfen lassen.</p>
+
+    <h2>Angaben gemäß § 5 DDG</h2>
+    <p>C&amp;C Autozentrum GbR<br /><Offen>{adress.street}</Offen><br /><Offen>{adress.zip} {adress.city}</Offen></p>
+
+    <h2>Vertretungsberechtigte Gesellschafter</h2>
+    <p><Offen>[Vor- und Nachname Gesellschafter 1]</Offen><br /><Offen>[Vor- und Nachname Gesellschafter 2]</Offen></p>
+
+    <h2>Kontakt</h2>
+    <p>Telefon: <Offen>{phoneDisplay}</Offen><br />E-Mail: <Offen>{email || "[E-Mail folgt]"}</Offen></p>
+
+    <h2>Umsatzsteuer</h2>
+    <p>Umsatzsteuer-Identifikationsnummer nach § 27a UStG: <Offen>[USt-IdNr. oder Hinweis, falls nicht vorhanden]</Offen></p>
+    <p>Steuernummer: <Offen>{taxnumber}</Offen></p>
+
+    <h2>Verbraucherstreitbeilegung</h2>
+    <p>Wir sind <Offen>[bereit / nicht bereit: bitte entscheiden]</Offen>, an einem Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
+  </section>
+</Layout>

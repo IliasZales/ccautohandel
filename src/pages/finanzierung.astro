@@ -1,0 +1,44 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHeader from "../components/PageHeader.astro";
+import Offen from "../components/Offen.astro";
+---
+
+<Layout title="Finanzierung – C&C Autozentrum" description="Fahrzeug finanzieren: Beispielrechnung, Partner und Ihre Rechte.">
+  <PageHeader eyebrow="Finanzierung" title="Finanzieren mit allen Zahlen auf dem Tisch." lead="Sie sehen Rate, Laufzeit, Zinssatz und Gesamtbetrag, bevor Sie etwas unterschreiben." />
+
+  <section class="wrap grid gap-10 py-16 lg:grid-cols-2">
+    <div class="border-2 border-graphit bg-sheet p-6">
+      <h2 class="text-3xl narrow">Beispielrechnung</h2>
+      <dl class="mt-4">
+        {[
+          ["Fahrzeugpreis", "[… €]"],
+          ["Anzahlung", "[… €]"],
+          ["Nettodarlehensbetrag", "[… €]"],
+          ["Laufzeit", "[… Monate]"],
+          ["Sollzinssatz gebunden", "[… % p. a.]"],
+          ["Effektiver Jahreszins", "[… % p. a.]"],
+          ["Monatliche Rate", "[… €]"],
+          ["Gesamtbetrag", "[… €]"],
+        ].map(([k, v]) => (
+          <div class="flex justify-between gap-4 border-b border-rule py-2.5"><dt>{k}</dt><dd class="font-mono text-sm"><Offen>{v}</Offen></dd></div>
+        ))}
+      </dl>
+      <p class="mt-4 text-sm text-graphit-soft">Finanzierungspartner: <Offen>[Bank nennen]</Offen>. Bonität vorausgesetzt.</p>
+    </div>
+
+    <div>
+      <h2 class="text-4xl narrow">Das gilt für Sie</h2>
+      <ul class="mt-5 border-t-2 border-graphit" role="list">
+        {[
+          ["14 Tage Widerruf", "Bei einem Verbraucherdarlehen können Sie innerhalb von 14 Tagen widerrufen."],
+          ["Sondertilgung", "Ob und zu welchen Konditionen Sie vorzeitig tilgen können, steht im Angebot: [Regel bestätigen]."],
+          ["Keine Kopplung", "Sie können das Auto auch ohne Finanzierung kaufen. Der Preis bleibt gleich."],
+        ].map(([t, x]) => (
+          <li class="border-b border-rule py-4"><h3 class="text-2xl narrow">{t}</h3><p class="text-graphit-soft">{x}</p></li>
+        ))}
+      </ul>
+      <a href="/kontakt" class="btn btn-primary mt-8">Finanzierung anfragen</a>
+    </div>
+  </section>
+</Layout>

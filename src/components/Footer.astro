@@ -1,0 +1,52 @@
+---
+import { getEntry } from "astro:content";
+import { NAV } from "../data/nav";
+import Wortmarke from "./Wortmarke.astro";
+import Siegel from "./Siegel.astro";
+
+const entry = await getEntry("settings", "index");
+const { adress, hours, phoneDisplay, email, companyName } = entry!.data;
+---
+
+<footer class="mt-24 bg-graphit pb-20 text-paper md:pb-0">
+  <div class="border-b border-paper/20">
+    <div class="wrap flex flex-wrap items-center gap-x-8 gap-y-4 py-8">
+      <p class="font-display text-2xl narrow tracking-wide">Unsere Zusagen</p>
+      <div class="flex flex-wrap gap-4">
+        <Siegel id="f-gw" kopf="Gewährleistung" mitte="12" unten="Monate" size={72} />
+        <Siegel id="f-pp" kopf="Prüfprotokoll" mitte="je Auto" unten="Messwerte" tone="graphit" size={72} />
+        <Siegel id="f-ep" kopf="Endpreis" mitte="brutto" unten="ohne Aufpreis" tone="stamp" size={72} />
+      </div>
+      <a href="/garantie" class="ml-auto font-semibold underline underline-offset-4 hover:text-gauge">
+        Zusagen im Wortlaut
+      </a>
+    </div>
+  </div>
+
+  <div class="wrap grid gap-10 py-12 md:grid-cols-3">
+    <div>
+      <div class="inline-block bg-paper p-2"><Wortmarke /></div>
+      <p class="mt-4 font-display text-xl narrow">Gute Fahrzeuge. Faire Geschäfte.<br />Vertrauen, das fährt.</p>
+    </div>
+    <address class="text-[0.95rem] not-italic leading-relaxed">
+      <p class="label !text-paper/60">Hof</p>
+      <p class="mt-1">{companyName}</p>
+      <p>{adress.street}</p>
+      <p>{adress.zip} {adress.city}</p>
+      <p class="label mt-4 !text-paper/60">Öffnungszeiten</p>
+      <p class="mt-1">{hours}</p>
+      <p class="label mt-4 !text-paper/60">Telefon</p>
+      <p class="mt-1 font-mono">{phoneDisplay}</p>
+      {email && <p class="font-mono">{email}</p>}
+    </address>
+    <nav aria-label="Fußzeile">
+      <p class="label !text-paper/60">Seiten</p>
+      <ul class="mt-1" role="list">
+        {NAV.map((n) => <li><a class="inline-block py-1 hover:underline" href={n.href}>{n.label}</a></li>)}
+        <li><a class="inline-block py-1 hover:underline" href="/finanzierung">Finanzierung</a></li>
+        <li class="mt-2 border-t border-paper/20 pt-2"><a class="inline-block py-1 hover:underline" href="/impressum">Impressum</a></li>
+        <li><a class="inline-block py-1 hover:underline" href="/datenschutz">Datenschutz</a></li>
+      </ul>
+    </nav>
+  </div>
+</footer>

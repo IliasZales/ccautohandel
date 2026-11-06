@@ -1,0 +1,19 @@
+{
+  "websiteUrl": "https://cc-autozentrum.de",
+  "phone": "",
+  "phoneDisplay": "[Telefonnummer folgt]",
+  "whatsapp": "",
+  "email": "",
+  "mapUrl": "",
+  "formbase": "",
+  "adress": {
+    "street": "[Straße und Nr. folgen]",
+    "city": "[Ort]",
+    "zip": "[PLZ]"
+  },
+  "hours": "[Öffnungszeiten folgen]",
+  "instagram": "",
+  "taxnumber": "[Steuernummer bitte ergänzen]",
+  "name": "[Gesellschafter bitte ergänzen]",
+  "companyName": "C&C Autozentrum GbR"
+}

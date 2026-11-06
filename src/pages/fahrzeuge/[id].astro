@@ -1,0 +1,75 @@
+---
+import { getCollection, getEntry } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import Fahrzeugakte from "../../components/Fahrzeugakte.astro";
+import Formular from "../../components/Formular.astro";
+
+export async function getStaticPaths() {
+  const alle = await getCollection("fahrzeuge");
+  return alle.map((f) => ({ params: { id: f.id }, props: { fahrzeug: f } }));
+}
+
+const { fahrzeug } = Astro.props;
+const settings = await getEntry("settings", "index");
+const { phone, phoneDisplay, whatsapp } = settings!.data;
+const tel = phone ? `tel:${phone}` : "/kontakt";
+const wa = whatsapp ? `https://wa.me/${whatsapp.replace(/\D/g, "")}` : "/kontakt";
+const d = fahrzeug.data;
+
+const schritte = [
+  ["Anfragen", "Per Formular, Telefon oder WhatsApp. Wir antworten am selben Werktag."],
+  ["Ansehen und Probefahren", "Mit Prüfprotokoll in der Hand. Sie dürfen jederzeit nein sagen."],
+  ["Vertrag lesen", "Endpreis und Gewährleistung stehen vorab schriftlich fest."],
+  ["Übergabe", "Schlüssel, Unterlagen, Prüfprotokoll. Zulassung und Überführung auf Wunsch."],
+];
+---
+
+<Layout title={`${d.titel} ${d.untertitel} – C&C Autozentrum`} description={`${d.titel} ${d.untertitel}, ${d.baujahr}, ${d.km.toLocaleString("de-DE")} km, Endpreis ${d.preis.toLocaleString("de-DE")} €.`}>
+  <div class="wrap pt-6">
+    <a href="/fahrzeuge" class="font-semibold underline underline-offset-4 hover:text-pen">← Alle Fahrzeuge</a>
+  </div>
+
+  <section class="wrap grid gap-10 py-8 lg:grid-cols-[1.1fr_0.9fr]">
+    <Fahrzeugakte {...d} open garantieHref="/garantie" />
+
+    <div class="flex flex-col gap-10 lg:sticky lg:top-24 lg:self-start">
+      <div>
+        <h1 class="text-4xl narrow">Dieses Auto ansehen</h1>
+        <p class="mt-2 text-graphit-soft">Am schnellsten geht es per Anruf oder WhatsApp.</p>
+        <div class="mt-4 flex flex-wrap gap-3">
+          <a href={tel} class="btn btn-primary"><span class="font-mono text-sm">{phoneDisplay}</span></a>
+          <a href={wa} class="btn btn-ghost">WhatsApp</a>
+        </div>
+      </div>
+
+      <div class="border-2 border-graphit bg-sheet p-5">
+        <h2 class="text-2xl narrow">Anfrage zu Nr. {d.bestandsNr}</h2>
+        <div class="mt-4">
+          <Formular
+            id="anfrage"
+            betreff={`Anfrage Fahrzeug Nr. ${d.bestandsNr} ${d.titel}`}
+            button="Anfrage senden"
+            zusage="Unverbindlich. Wir antworten am selben Werktag."
+            felder={[
+              { name: "name", label: "Name", required: true, autocomplete: "name" },
+              { name: "telefon", label: "Telefon", type: "tel", required: true, autocomplete: "tel" },
+              { name: "nachricht", label: "Ihre Frage", type: "textarea", hint: "Zum Beispiel: Probefahrt, Finanzierung, Überführung." },
+            ]}
+          />
+        </div>
+      </div>
+
+      <div>
+        <h2 class="text-2xl narrow">So läuft der Kauf</h2>
+        <ol class="mt-3 border-t-2 border-graphit" role="list">
+          {schritte.map(([t, x], i) => (
+            <li class="grid grid-cols-[2.5rem_1fr] gap-2 border-b border-rule py-3">
+              <span class="font-mono text-sm text-pen" aria-hidden="true">{i + 1}.</span>
+              <p><strong>{t}.</strong> <span class="text-graphit-soft">{x}</span></p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  </section>
+</Layout>

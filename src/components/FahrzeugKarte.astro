@@ -1,0 +1,41 @@
+---
+import DynamicImage from "./utils/DynamicImage.astro";
+import { IMAGES } from "../data/images";
+
+interface Props {
+  id: string;
+  titel: string;
+  untertitel: string;
+  baujahr: number;
+  km: number;
+  kraftstoff: string;
+  hu: string;
+  preis: number;
+  bild: keyof typeof IMAGES;
+  beispiel?: boolean;
+}
+const { id, titel, untertitel, baujahr, km, kraftstoff, hu, preis, bild, beispiel } = Astro.props;
+const de = (n: number) => n.toLocaleString("de-DE");
+const image = IMAGES[bild];
+---
+
+<li
+  class="fz group relative border-2 border-graphit bg-sheet"
+  data-kraftstoff={kraftstoff}
+  data-preis={preis}
+  data-km={km}
+>
+  {beispiel && <p class="absolute top-3 right-3 z-10 rotate-3 border-2 border-stamp bg-sheet/90 px-2 py-0.5 font-display text-sm wide text-stamp">BEISPIEL</p>}
+  <DynamicImage src={image.file} alt={image.alt} isAi={image.isAi} classes="aspect-[4/3] w-full border-b-2 border-graphit object-cover" />
+  <div class="p-4">
+    <h3 class="text-2xl narrow">
+      <a href={`/fahrzeuge/${id}`} class="after:absolute after:inset-0 hover:text-pen">{titel}</a>
+    </h3>
+    <p class="text-sm text-graphit-soft">{untertitel}</p>
+    <p class="mt-3 font-display text-3xl wide">{de(preis)}&nbsp;€</p>
+    <p class="label mt-1">Endpreis inkl. MwSt.</p>
+    <p class="mt-3 border-t border-rule pt-3 font-mono text-[0.8rem]">
+      {baujahr} · {de(km)} km · {kraftstoff} · HU {hu}
+    </p>
+  </div>
+</li>

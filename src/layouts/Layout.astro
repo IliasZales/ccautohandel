@@ -1,0 +1,48 @@
+---
+import Footer from "../components/Footer.astro";
+import Navigation from "../components/Navigation.astro";
+import KontaktLeiste from "../components/KontaktLeiste.astro";
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "C&C Autozentrum GbR – Gebrauchtwagen mit Prüfprotokoll",
+  description = "Gebrauchtwagen kaufen und verkaufen bei C&C Autozentrum: geprüfte Fahrzeuge, Endpreis, Gewährleistung, eigene Werkstatt.",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#f3f5f4" />
+    <link rel="canonical" href={Astro.url.href} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href="/fonts/archivo-wdth.woff2" as="font" type="font/woff2" crossorigin />
+  </head>
+  <body>
+    <a
+      href="#inhalt"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:bg-gauge focus:px-4 focus:py-2 focus:font-semibold"
+    >
+      Zum Inhalt springen
+    </a>
+    <Navigation />
+    <main id="inhalt">
+      <slot />
+    </main>
+    <Footer />
+    <KontaktLeiste />
+  </body>
+</html>

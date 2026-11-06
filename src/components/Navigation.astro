@@ -1,0 +1,64 @@
+---
+import { getEntry } from "astro:content";
+import { NAV } from "../data/nav";
+import Wortmarke from "./Wortmarke.astro";
+
+const entry = await getEntry("settings", "index");
+const { phone, phoneDisplay } = entry!.data;
+const tel = phone ? `tel:${phone}` : "/kontakt";
+const path = Astro.url.pathname;
+---
+
+<header class="sticky top-0 z-30 border-b-2 border-graphit bg-paper/95 backdrop-blur">
+  <div class="wrap flex min-h-16 items-center justify-between gap-4">
+    <a href="/" aria-label="C&C Autozentrum, zur Startseite"><Wortmarke /></a>
+
+    <nav aria-label="Hauptnavigation" class="hidden lg:block">
+      <ul class="flex items-center gap-1" role="list">
+        {
+          NAV.map((n) => (
+            <li>
+              <a
+                href={n.href}
+                aria-current={path.startsWith(n.href) ? "page" : undefined}
+                class="block px-3 py-2 text-[0.95rem] font-medium underline-offset-[6px] hover:underline aria-[current=page]:underline aria-[current=page]:decoration-2"
+              >
+                {n.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <a href={tel} class="btn btn-primary hidden !min-h-11 sm:inline-flex">
+        <span class="font-mono text-sm font-medium">{phoneDisplay}</span>
+      </a>
+      <details class="menu relative lg:hidden">
+        <summary
+          class="btn btn-ghost !min-h-11 cursor-pointer list-none marker:hidden [&::-webkit-details-marker]:hidden"
+          aria-label="Menü"
+        >
+          Menü
+        </summary>
+        <nav
+          aria-label="Mobile Navigation"
+          class="absolute right-0 mt-2 w-64 border-2 border-graphit bg-sheet"
+        >
+          <ul role="list">
+            {
+              NAV.map((n) => (
+                <li class="border-b border-rule last:border-0">
+                  <a href={n.href} class="block px-4 py-3 font-medium hover:bg-carbon">
+                    {n.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+      </details>
+    </div>
+  </div>
+</header>

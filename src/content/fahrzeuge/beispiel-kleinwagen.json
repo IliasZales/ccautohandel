@@ -1,0 +1,45 @@
+{
+  "bestandsNr": "0002",
+  "titel": "Opel Corsa F",
+  "untertitel": "1.2 Turbo Edition",
+  "baujahr": 2021,
+  "km": 46200,
+  "kraftstoff": "Benzin",
+  "getriebe": "Schaltgetriebe",
+  "ps": 100,
+  "hu": "03/2028",
+  "preis": 13990,
+  "bild": "fahrzeugBeispiel",
+  "beispiel": true,
+  "messwerte": [
+    {
+      "label": "Profiltiefe vorne",
+      "wert": "5,5 mm"
+    },
+    {
+      "label": "Profiltiefe hinten",
+      "wert": "5,0 mm"
+    },
+    {
+      "label": "Bremsbelag vorne",
+      "wert": "7 mm"
+    },
+    {
+      "label": "Bremsbelag hinten",
+      "wert": "6 mm"
+    },
+    {
+      "label": "Ölstand und Ölwechsel",
+      "wert": "gewechselt bei 128.100 km"
+    },
+    {
+      "label": "Schlüssel",
+      "wert": "2 von 2 vorhanden"
+    }
+  ],
+  "geprueftAm": "Beispiel",
+  "maengel": [
+    "Steinschlag Frontscheibe, rechts unten, ca. 3 mm",
+    "Kratzer Stoßfänger hinten links, 8 cm, nicht durchlackiert"
+  ]
+}
